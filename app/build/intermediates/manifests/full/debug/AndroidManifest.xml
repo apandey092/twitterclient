@@ -51,6 +51,11 @@
             android:name="com.codepath.apps.twitterclient.TimeLineActivity"
             android:label="@string/title_activity_time_line" >
         </activity>
+        <activity
+            android:name="com.codepath.apps.twitterclient.ComposeActivity"
+            android:icon="@drawable/ic_twitter"
+            android:label="@string/title_activity_compose" >
+        </activity>
     </application>
 
 </manifest>
