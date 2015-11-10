@@ -5,7 +5,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tweet"
-        android:id="@+id/btnTweet2"
+        android:id="@+id/btnTweet"
         android:enabled="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -16,10 +16,12 @@
         android:layout_height="wrap_content"
         android:text="140"
         android:id="@+id/tvChars"
-        android:layout_alignBottom="@+id/btnTweet2"
-        android:layout_toLeftOf="@+id/btnTweet2"
-        android:layout_toStartOf="@+id/btnTweet2"
-        android:layout_alignParentTop="true" />
+        android:gravity="center"
+        android:layout_alignBottom="@+id/btnTweet"
+        android:layout_toLeftOf="@+id/btnTweet"
+        android:layout_toStartOf="@+id/btnTweet"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="false" />
 
     <ImageView
         android:layout_width="50dp"

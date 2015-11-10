@@ -41,7 +41,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/tvUserName"
         android:textStyle="bold"
         android:textSize="10sp"
@@ -49,13 +48,4 @@
         android:layout_marginLeft="25dp"
         android:layout_toRightOf="@+id/ivUserProfile" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/tvScreenName"
-        android:textSize="10sp"
-        android:layout_above="@+id/tvBody"
-        android:layout_marginLeft="25dp"
-        android:layout_toRightOf="@+id/tvUserName" />
 </RelativeLayout>

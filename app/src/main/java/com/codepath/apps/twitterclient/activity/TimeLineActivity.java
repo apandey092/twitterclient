@@ -2,6 +2,8 @@ package com.codepath.apps.twitterclient.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -68,6 +70,7 @@ public class TimeLineActivity extends AppCompatActivity {
                 startActivity(tweetIntent);
             }
         });
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4099FF")));
         populateTimeline();
     }
 

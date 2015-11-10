@@ -1,5 +1,7 @@
 package com.codepath.apps.twitterclient.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
@@ -22,7 +24,6 @@ public class TweetActivity extends AppCompatActivity {
     private TextView tvBody;
     private TextView tvTimestamp;
     private TextView tvUserName;
-    private TextView tvScreenName;
 
     private ImageView ivUserProfile;
 
@@ -40,16 +41,15 @@ public class TweetActivity extends AppCompatActivity {
         tvBody = (TextView) findViewById(R.id.tvBody);
         tvTimestamp = (TextView) findViewById(R.id.tvCreatedAt);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
-        tvScreenName = (TextView) findViewById(R.id.tvScreenName);
         if (tweet.getUser().getProfileImageUri() != null) {
             Picasso.with(this).load(tweet.getUser().getProfileImageUri()).into(ivUserProfile);
         }
         tvBody.setText(tweet.getBody());
         tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
-        tvUserName.setText(tweet.getUser().getName());
-        tvScreenName.setText("@" + tweet.getUser().getScreenName());
+        tvUserName.setText("@" + tweet.getUser().getScreenName());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4099FF")));
 
 
     }

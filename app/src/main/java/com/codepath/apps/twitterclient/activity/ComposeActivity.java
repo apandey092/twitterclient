@@ -2,6 +2,7 @@ package com.codepath.apps.twitterclient.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -46,6 +47,7 @@ public class ComposeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_compose_tweet);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4099FF")));
         setUpViews();
     }
 
@@ -118,8 +120,9 @@ public class ComposeActivity extends AppCompatActivity {
         // Retrieve the action-view from menu
         View v = MenuItemCompat.getActionView(actionViewItem);
         // Find the button within action-view
-        btnTweet = (Button) v.findViewById(R.id.btnTweet2);
+        btnTweet = (Button) v.findViewById(R.id.btnTweet);
         tvChars = (TextView) v.findViewById(R.id.tvChars);
+        btnTweet.setBackground(new ColorDrawable(Color.parseColor("#4099FF")));
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,9 +144,7 @@ public class ComposeActivity extends AppCompatActivity {
 
                 }
                 charCount = 140 - evText.getText().length();
-//                tvChars.clearComposingText();
                 tvChars.setText(""+charCount);
-
             }
 
             @Override
