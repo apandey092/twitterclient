@@ -55,7 +55,7 @@ public class TimeLineActivity extends AppCompatActivity {
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                populateTimeline();
+                populateTimeline(false);
                 return false;
             }
         });
@@ -71,9 +71,8 @@ public class TimeLineActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4099FF")));
-        populateTimeline();
+        populateTimeline(false);
     }
-
 
 
     private void setUpSwipe() {
@@ -85,7 +84,7 @@ public class TimeLineActivity extends AppCompatActivity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                populateTimelineForSwipe();
+                populateTimeline(true);
             }
         });
         // Configure the refreshing colors
@@ -95,11 +94,21 @@ public class TimeLineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
     }
 
-    private void populateTimelineForSwipe() {
+    private void populateTimeline(final boolean refresh) {
+        if (!isNetworkAvailable()) {
+            Toast.makeText(this, "Internet not available", Toast.LENGTH_LONG).show();
+            aTweets.addAll(Tweet.getAll());
+            swipeContainer.setRefreshing(false);
+            return;
+        }
+
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                aTweets.clear();
+
+                if (refresh) {
+                    aTweets.clear();
+                }
                 aTweets.addAll(Tweet.fromJsonArray(response));
                 aTweets.notifyDataSetChanged();
                 Tweet tweet = tweets.get(tweets.size() - 1);
@@ -109,30 +118,11 @@ public class TimeLineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject err) {
-                Log.d("ERROR", err.toString());
-
-            }
-        }, null);
-    }
-
-    private void populateTimeline() {
-        if (!isNetworkAvailable()) {
-            Toast.makeText(this, "Internet not available", Toast.LENGTH_LONG).show();
-            aTweets.addAll(Tweet.getAll());
-            return;
-        }
-        client.getHomeTimeLine(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                aTweets.addAll(Tweet.fromJsonArray(response));
-                aTweets.notifyDataSetChanged();
-                Tweet tweet = tweets.get(tweets.size() -1);
-                lastId = ""+tweet.getUid();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject err) {
-                Log.d("ERROR", err.toString());
+                if(err != null) {
+                    Log.d("ERROR", err.toString());
+                }
+                aTweets.addAll(Tweet.getAll());
+                swipeContainer.setRefreshing(false);
 
             }
         }, lastId);
@@ -163,9 +153,9 @@ public class TimeLineActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
-              aTweets.clear();
-              populateTimeline();
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            aTweets.clear();
+            populateTimeline(false);
         }
     }
 

@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -12,11 +11,8 @@ import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.models.Tweet;
+import com.codepath.apps.twitterclient.util.RelativeTime;
 import com.squareup.picasso.Picasso;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class TweetActivity extends AppCompatActivity {
 
@@ -45,7 +41,7 @@ public class TweetActivity extends AppCompatActivity {
             Picasso.with(this).load(tweet.getUser().getProfileImageUri()).into(ivUserProfile);
         }
         tvBody.setText(tweet.getBody());
-        tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+        tvTimestamp.setText(RelativeTime.getRelativeTimeAgo(tweet.getCreatedAt()));
         tvUserName.setText("@" + tweet.getUser().getScreenName());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,24 +70,5 @@ public class TweetActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    public String getRelativeTimeAgo(String rawJsonDate) {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-
-        String relativeDate = "";
-        try {
-            long dateMillis = sf.parse(rawJsonDate).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return relativeDate;
     }
 }

@@ -71,7 +71,7 @@ public class User extends Model implements Parcelable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        u.save();
+        u.save();
         return u;
 
 

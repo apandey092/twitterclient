@@ -23,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvBody"
-        android:textSize="11sp"
         android:layout_marginLeft="10dp"
         android:autoLink="all"
         android:layout_toEndOf="@+id/ivUserProfile"
@@ -33,7 +32,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="10sp"
         android:id="@+id/tvCreatedAt"
         android:layout_alignParentRight="true"
         android:layout_marginRight="25dp" />
@@ -42,8 +40,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvUserName"
-        android:textStyle="bold"
-        android:textSize="10sp"
         android:layout_above="@+id/tvBody"
         android:layout_marginLeft="25dp"
         android:layout_toRightOf="@+id/ivUserProfile" />
