@@ -9,8 +9,8 @@
     </application>
 
     <instrumentation android:name="android.test.InstrumentationTestRunner"
-                     android:targetPackage="com.codepath.apps.restclienttemplate"
+                     android:targetPackage="com.codepath.apps.twitterclient"
                      android:handleProfiling="false"
                      android:functionalTest="false"
-                     android:label="Tests for com.codepath.apps.restclienttemplate"/>
+                     android:label="Tests for com.codepath.apps.twitterclient"/>
 </manifest>

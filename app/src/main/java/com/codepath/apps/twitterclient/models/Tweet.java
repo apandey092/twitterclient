@@ -4,11 +4,20 @@ package com.codepath.apps.twitterclient.models;
  * Created by apandey on 11/3/15.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * [
@@ -70,14 +79,22 @@ import java.util.ArrayList;
  * },
  */
 // Parse the json,
-public class Tweet {
+@Table(name = "Tweets")
+public class Tweet extends Model implements Parcelable {
+    @Column(name = "body")
     private String body;
+    @Column(name = "tweet_id")
     private long uid;
+    @Column(name= "user")
     private User user;
 
+    @Column(name = "created_at", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String createdAt;
 
 //    Deserialize json
+    public Tweet(){
+        super();
+    }
 
     public User getUser() {
         return user;
@@ -103,8 +120,7 @@ public class Tweet {
             tweet.uid =(Long)json.getLong("id");
             tweet.createdAt = (String)json.getString("created_at");
             tweet.user = User.fromJson((json.getJSONObject("user")));
-
-
+            tweet.save();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -116,7 +132,9 @@ public class Tweet {
        ArrayList<Tweet> tweetList = new ArrayList<>();
        for(int i=0; i<jsonArray.length(); i++){
            try {
-               tweetList.add(fromJson(jsonArray.getJSONObject(i)));
+               Tweet tweet = fromJson(jsonArray.getJSONObject(i));
+               tweetList.add(tweet);
+//               tweet.save();
            } catch (JSONException e) {
                e.printStackTrace();
            }
@@ -125,4 +143,40 @@ public class Tweet {
        return tweetList;
    }
 
+    public static List<Tweet> getAll() {
+        return new Select()
+                .from(Tweet.class)
+                .orderBy("created_at DESC")
+                .execute();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.body);
+        dest.writeLong(this.uid);
+        dest.writeParcelable(this.user, flags);
+        dest.writeString(this.createdAt);
+    }
+
+    protected Tweet(Parcel in) {
+        this.body = in.readString();
+        this.uid = in.readLong();
+        this.user = in.readParcelable(User.class.getClassLoader());
+        this.createdAt = in.readString();
+    }
+
+    public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
+        public Tweet createFromParcel(Parcel source) {
+            return new Tweet(source);
+        }
+
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 }

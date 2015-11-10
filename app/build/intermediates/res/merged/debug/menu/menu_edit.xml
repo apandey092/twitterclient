@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.codepath.apps.twitterclient.TimeLineActivity">
+    tools:context="com.codepath.apps.twitterclient.activity.TimeLineActivity">
     <item android:id="@+id/action_edit"
         android:icon="@drawable/ic_edit"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom"
        />
 
-</menu><!-- From: file:/Users/ashish/groupondev/androidTraining/twitterclient/app/src/main/res/menu/menu_edit.xml -->
+</menu><!-- From: file:/Users/ashish/groupondev/tempDir/twitterclient/app/src/main/res/menu/menu_edit.xml -->

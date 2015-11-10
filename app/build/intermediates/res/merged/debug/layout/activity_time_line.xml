@@ -1,7 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"  android:id="@+id/swipeContainer"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.twitterclient.TimeLineActivity">
+    tools:context="com.codepath.apps.twitterclient.activity.TimeLineActivity">
 
     <ListView
         android:layout_width="wrap_content"
@@ -11,5 +13,5 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true" />
-</RelativeLayout>
-<!-- From: file:/Users/ashish/groupondev/androidTraining/twitterclient/app/src/main/res/layout/activity_time_line.xml -->
+</android.support.v4.widget.SwipeRefreshLayout>
+<!-- From: file:/Users/ashish/groupondev/tempDir/twitterclient/app/src/main/res/layout/activity_time_line.xml -->

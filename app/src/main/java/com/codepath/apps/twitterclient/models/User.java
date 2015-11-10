@@ -1,5 +1,12 @@
 package com.codepath.apps.twitterclient.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,11 +30,20 @@ import org.json.JSONObject;
  * "entities": {
  * "url": {
  */
-public class User {
+@Table(name="users")
+public class User extends Model implements Parcelable {
+    @Column(name="name")
     private String name;
+    @Column(name = "user_id")
     private long uid;
+    @Column(name = "screenName")
     private String screenName;
+    @Column(name="profileImageUri")
     private String profileImageUri;
+
+    public User(){
+        super();
+    }
 
     public String getName() {
         return name;
@@ -55,8 +71,50 @@ public class User {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+//        u.save();
         return u;
 
 
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", uid=" + uid +
+                ", screenName='" + screenName + '\'' +
+                ", profileImageUri='" + profileImageUri + '\'' +
+                '}';
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeLong(this.uid);
+        dest.writeString(this.screenName);
+        dest.writeString(this.profileImageUri);
+    }
+
+    protected User(Parcel in) {
+        this.name = in.readString();
+        this.uid = in.readLong();
+        this.screenName = in.readString();
+        this.profileImageUri = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

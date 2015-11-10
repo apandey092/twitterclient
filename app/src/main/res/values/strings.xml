@@ -3,10 +3,11 @@
 
     <string name="app_name">Twitter Client</string>
     <string name="login_label">Connect To Twitter</string>
-    <string name="title_activity_time_line">Time Line Activity</string>
+    <string name="title_activity_time_line">Time Line</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Compose</string>
     <string name="title_activity_compose">Compose Tweet</string>
+    <string name="title_activity_tweet">Tweet</string>
 
 </resources>

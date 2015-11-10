@@ -4,39 +4,43 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.codepath.apps.twitterclient.ComposeActivity">
+    tools:context="com.codepath.apps.twitterclient.activity.ComposeActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tweet"
-        android:id="@+id/btnTweet"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="134dp"
-        android:onClick="onSave"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Compose"
-        android:id="@+id/tvTweet"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/evTweet"
-        android:layout_alignParentBottom="false"
-        android:textAlignment="gravity"
-        android:layout_alignParentTop="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/evTweet"
-        android:layout_toRightOf="@+id/tvTweet"
+        android:hint="Write sth.."
+        android:textAlignment="gravity"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="116dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:hint="Write sth.."
-        android:textAlignment="gravity" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivUserProfileView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="10dp"
+        android:minHeight="50dp"
+        android:minWidth="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvUserN"
+        android:layout_toRightOf="@+id/ivUserProfileView"
+        android:layout_toEndOf="@+id/ivUserProfileView"
+        android:padding="5dp"
+        android:layout_alignTop="@+id/ivUserProfileView" />
+
 </RelativeLayout>
-<!-- From: file:/Users/ashish/groupondev/androidTraining/twitterclient/app/src/main/res/layout/activity_compose.xml -->
+<!-- From: file:/Users/ashish/groupondev/tempDir/twitterclient/app/src/main/res/layout/activity_compose.xml -->
