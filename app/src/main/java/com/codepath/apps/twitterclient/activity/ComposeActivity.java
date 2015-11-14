@@ -69,8 +69,6 @@ public class ComposeActivity extends AppCompatActivity {
 
        evText = (EditText)findViewById(R.id.evTweet);
 
-
-
     }
 
     @Override
