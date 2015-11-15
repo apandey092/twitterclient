@@ -36,15 +36,8 @@ public abstract class TweetsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tweet, container, false);
         lvTweets = (ListView) v.findViewById(R.id.lvTweets);
-//        View footer = inflater.inflate(
-//                R.layout.action_view_progress, container, false);
-//        // Find the progressbar within footer
-//        progressBarFooter = (ProgressBar)
-//                footer.findViewById(R.id.pbFooterLoading);
-//        // Add footer to ListView before setting adapter
-//        lvTweets.addFooterView(footer);
-        lvTweets.setAdapter(aTweets);
-
+        setupListWithFooter(v, inflater);
+//        showProgressBar();
         return v;
     }
 
@@ -53,6 +46,12 @@ public abstract class TweetsListFragment extends Fragment {
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(getActivity(), tweets);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+
+        lvTweets.setAdapter(aTweets);
     }
 
     public void addAll(List<Tweet> tweets){
@@ -82,6 +81,21 @@ public abstract class TweetsListFragment extends Fragment {
         progressBarFooter.setVisibility(View.INVISIBLE);
     }
 
-
+    // Adds footer to the list default hidden progress
+    public void setupListWithFooter(View v, LayoutInflater inflater) {
+        // Find the ListView
+        ListView lvItems = (ListView) v.findViewById(R.id.lvTweets);
+        // Inflate the footer
+        View footer = inflater.inflate(
+                R.layout.action_view_progress, null);
+        // Find the progressbar within footer
+        progressBarFooter = (ProgressBar)
+                footer.findViewById(R.id.pbFooterLoading);
+        // Add footer to ListView before setting adapter
+        lvItems.addFooterView(footer);
+//        progressBarFooter.setVisibility(View.VISIBLE);
+//        // Set the adapter AFTER adding footer
+//        lvItems.setAdapter(myAdapter);
+    }
 
 }

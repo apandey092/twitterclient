@@ -32,26 +32,23 @@ public class HomeTimeLineFragment extends TweetsListFragment {
 
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
-        populateTimeline(false);
+//        populateTimeline(false);
 
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View v = super.onCreateView(inflater, container, savedInstanceState);
+
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-
                 populateTimeline(false);
-
                 return false;
             }
         });
@@ -67,6 +64,7 @@ public class HomeTimeLineFragment extends TweetsListFragment {
             }
         });
 
+
         // Set the adapter AFTER adding footer
 //        lvTweets.setAdapter(myAdapter);
 
@@ -74,8 +72,14 @@ public class HomeTimeLineFragment extends TweetsListFragment {
         return v;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        populateTimeline(false);
+    }
+
     private void populateTimeline(final boolean refresh) {
-//        showProgressBar();
+        showProgressBar();
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

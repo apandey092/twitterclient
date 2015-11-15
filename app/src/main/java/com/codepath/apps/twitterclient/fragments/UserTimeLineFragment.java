@@ -19,15 +19,10 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * Created by apandey on 11/13/15.
- */
 public class UserTimeLineFragment extends TweetsListFragment{
 
     private TwitterClient client;
     private SwipeRefreshLayout swipeContainer;
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +31,6 @@ public class UserTimeLineFragment extends TweetsListFragment{
         populateTimeline(false);
     }
 
-    // DemoFragment.newInstance(5, "Hello");
     public static UserTimeLineFragment newInstance(String screenName) {
         UserTimeLineFragment fragmentDemo = new UserTimeLineFragment();
         Bundle args = new Bundle();
