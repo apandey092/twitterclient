@@ -3,7 +3,6 @@ package com.codepath.apps.twitterclient.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,10 @@ import java.util.List;
  * Created by apandey on 11/12/15.
  */
 public abstract class TweetsListFragment extends Fragment {
-    private TweetsArrayAdapter aTweets;
+    private static final int REQUEST_CODE = 10;
+    protected TweetsArrayAdapter aTweets;
     private ArrayList<Tweet> tweets;
     public ListView lvTweets;
-    private SwipeRefreshLayout swipeContainer;
     // Store reference to the progress bar later
     protected ProgressBar progressBarFooter;
 
@@ -37,7 +36,6 @@ public abstract class TweetsListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tweet, container, false);
         lvTweets = (ListView) v.findViewById(R.id.lvTweets);
         setupListWithFooter(v, inflater);
-//        showProgressBar();
         return v;
     }
 
@@ -50,7 +48,6 @@ public abstract class TweetsListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-
         lvTweets.setAdapter(aTweets);
     }
 

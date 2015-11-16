@@ -85,14 +85,23 @@ public class Tweet extends Model implements Parcelable {
     private String body;
     @Column(name = "tweet_id")
     private long uid;
-    @Column(name= "user")
+    @Column(name = "user")
     private User user;
+
+    @Column(name = "favorite_active")
+    private Boolean isFavorite;
+
+    @Column(name = "favorite_count")
+    private int favoriteCount;
 
     @Column(name = "created_at", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String createdAt;
 
-//    Deserialize json
-    public Tweet(){
+    @Column(name = "retweet_count")
+    private int retweetCount;
+
+    //    Deserialize json
+    public Tweet() {
         super();
     }
 
@@ -113,14 +122,22 @@ public class Tweet extends Model implements Parcelable {
         return createdAt;
     }
 
-    public static Tweet fromJson(JSONObject json){
+    public static Tweet fromJson(JSONObject json) {
         Tweet tweet = new Tweet();
         try {
-            tweet.body = (String)json.getString("text");
-            tweet.uid =(Long)json.getLong("id");
-            tweet.createdAt = (String)json.getString("created_at");
+            tweet.body = (String) json.getString("text");
+            tweet.uid = (Long) json.getLong("id");
+            tweet.createdAt = (String) json.getString("created_at");
             tweet.user = User.fromJson((json.getJSONObject("user")));
-            tweet.save();
+            tweet.user = User.fromJson((json.getJSONObject("user")));
+            tweet.isFavorite = json.getBoolean("favorited");
+            if(json.has("favorite_count")) {
+                tweet.favoriteCount = json.getInt("favorite_count");
+
+            }
+            if(json.has("retweet_count")) {
+                tweet.retweetCount = json.getInt("retweet_count");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -128,26 +145,35 @@ public class Tweet extends Model implements Parcelable {
         return tweet;
     }
 
-   public static  ArrayList<Tweet> fromJsonArray(JSONArray jsonArray){
-       ArrayList<Tweet> tweetList = new ArrayList<>();
-       for(int i=0; i<jsonArray.length(); i++){
-           try {
-               Tweet tweet = fromJson(jsonArray.getJSONObject(i));
-               tweetList.add(tweet);
-//               tweet.save();
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
+    public static ArrayList<Tweet> fromJsonArray(JSONArray jsonArray) {
+        ArrayList<Tweet> tweetList = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                Tweet tweet = fromJson(jsonArray.getJSONObject(i));
+                tweetList.add(tweet);
+                tweet.save();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-       }
-       return tweetList;
-   }
+        }
+        return tweetList;
+    }
 
     public static List<Tweet> getAll() {
         return new Select()
                 .from(Tweet.class)
                 .orderBy("created_at DESC")
                 .execute();
+    }
+
+
+    public Boolean getIsFavorite() {
+        return isFavorite;
+    }
+
+    public int getFavoriteCount() {
+        return favoriteCount;
     }
 
     @Override
@@ -159,18 +185,24 @@ public class Tweet extends Model implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.body);
         dest.writeLong(this.uid);
-        dest.writeParcelable(this.user, flags);
+        dest.writeParcelable(this.user, 0);
+        dest.writeValue(this.isFavorite);
+        dest.writeInt(this.favoriteCount);
         dest.writeString(this.createdAt);
+        dest.writeInt(this.retweetCount);
     }
 
     protected Tweet(Parcel in) {
         this.body = in.readString();
         this.uid = in.readLong();
         this.user = in.readParcelable(User.class.getClassLoader());
+        this.isFavorite = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.favoriteCount = in.readInt();
         this.createdAt = in.readString();
+        this.retweetCount = in.readInt();
     }
 
-    public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
+    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
         public Tweet createFromParcel(Parcel source) {
             return new Tweet(source);
         }
@@ -179,4 +211,8 @@ public class Tweet extends Model implements Parcelable {
             return new Tweet[size];
         }
     };
+
+    public int getRetweetCount() {
+        return retweetCount;
+    }
 }

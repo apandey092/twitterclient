@@ -9,13 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.TwitterApplication;
-import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.twitter.TwitterApplication;
+import com.codepath.apps.twitterclient.twitter.TwitterClient;
 import com.codepath.apps.twitterclient.activity.TweetActivity;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.util.EndlessScrollListener;
+import com.codepath.apps.twitterclient.util.Network;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -59,14 +61,10 @@ public class HomeTimeLineFragment extends TweetsListFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent tweetIntent = new Intent(getActivity(), TweetActivity.class);
                 Tweet tweet = (Tweet) parent.getItemAtPosition(position);
-                tweetIntent.putExtra("user", tweet.getUser());
+                tweetIntent.putExtra("tweet", tweet);
                 startActivity(tweetIntent);
             }
         });
-
-
-        // Set the adapter AFTER adding footer
-//        lvTweets.setAdapter(myAdapter);
 
         setUpSwipe(v);
         return v;
@@ -79,11 +77,16 @@ public class HomeTimeLineFragment extends TweetsListFragment {
     }
 
     private void populateTimeline(final boolean refresh) {
+        if (!Network.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), "Internet not available", Toast.LENGTH_SHORT).show();
+            aTweets.addAll(Tweet.getAll());
+            swipeContainer.setRefreshing(false);
+            return;
+        }
         showProgressBar();
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
                 if (refresh) {
                     getTweetAdapter().clear();
                 }
@@ -92,7 +95,6 @@ public class HomeTimeLineFragment extends TweetsListFragment {
                 Tweet tweet = getTweets().get(getTweets().size() - 1);
                 lastId = "" + tweet.getUid();
                 swipeContainer.setRefreshing(false);
-
             }
 
             @Override
@@ -105,9 +107,9 @@ public class HomeTimeLineFragment extends TweetsListFragment {
 
             }
         }, lastId);
-//        hideProgressBar();
+        hideProgressBar();
     }
-    //
+
     private void setUpSwipe(View v) {
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -129,9 +131,7 @@ public class HomeTimeLineFragment extends TweetsListFragment {
 
     public void refresh(){
         getTweetAdapter().clear();
-        populateTimeline(true);
+//        populateTimeline(true);
         swipeContainer.setRefreshing(false);
     }
-
-
 }

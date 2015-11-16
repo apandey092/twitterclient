@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User Name"
-            android:id="@+id/tvUserName"
+            android:id="@+id/tvScreenName"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/ivProfile"
             android:layout_toEndOf="@+id/ivProfile"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="Tagline"
             android:id="@+id/tvTagline"
-            android:layout_below="@+id/tvUserName"
+            android:layout_below="@+id/tvScreenName"
             android:layout_toRightOf="@+id/ivProfile"
             android:textSize="12sp"
            />

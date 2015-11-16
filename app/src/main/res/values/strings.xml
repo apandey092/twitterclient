@@ -11,5 +11,6 @@
     <string name="title_activity_tweet">Tweet</string>
     <string name="hint_compose">What\'s happenning ..</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_retweet">RetweetActivity</string>
 
 </resources>

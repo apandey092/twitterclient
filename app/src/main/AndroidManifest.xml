@@ -72,6 +72,10 @@
             android:name=".activity.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
+        <activity
+            android:name=".activity.RetweetActivity"
+            android:label="@string/title_activity_retweet" >
+        </activity>
     </application>
 
 </manifest>

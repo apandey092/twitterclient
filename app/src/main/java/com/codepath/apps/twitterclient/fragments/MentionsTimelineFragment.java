@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.TwitterApplication;
-import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.twitter.TwitterApplication;
+import com.codepath.apps.twitterclient.twitter.TwitterClient;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.util.EndlessScrollListener;
+import com.codepath.apps.twitterclient.util.Network;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -33,7 +35,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
-        populateTimeline(false);
+//        populateTimeline(false);
 
     }
 
@@ -54,6 +56,12 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     }
 
     public void populateTimeline(final boolean refresh) {
+        if (!Network.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), "Internet not available", Toast.LENGTH_SHORT).show();
+            aTweets.addAll(Tweet.getAll());
+            swipeContainer.setRefreshing(false);
+            return;
+        }
         client.getMentionsTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.TwitterApplication;
-import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
+import com.codepath.apps.twitterclient.twitter.TwitterApplication;
+import com.codepath.apps.twitterclient.twitter.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
@@ -37,12 +37,17 @@ public class ComposeActivity extends AppCompatActivity {
     private EditText evText;
     private TextView tvChars;
     private int charCount;
+    private String userReplyId;
+    private Tweet tweet;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         client = TwitterApplication.getRestClient();
+        tweet = (Tweet) getIntent().getParcelableExtra("tweet");
+//        Log.d("DEBUG TWEET", tweet.toString());
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_compose_tweet);
@@ -53,21 +58,26 @@ public class ComposeActivity extends AppCompatActivity {
 
     private void setUpViews() {
 
-        ivProfileImage = (ImageView)findViewById(R.id.ivUserProfileView);
+        ivProfileImage = (ImageView) findViewById(R.id.ivUserProfileView);
+        evText = (EditText) findViewById(R.id.evTweet);
+        if (tweet == null || tweet.getUser() == null) {
+            client.getCurrentUser(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    user = User.fromJson(response);
 
-        client.getCurrentUser(new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                User user = User.fromJson(response);
-                Log.d("User ", user.toString());
-                tvUserName = (TextView)findViewById(R.id.tvUserN);
-                tvUserName.setText("@"+user.getScreenName());
-                Picasso.with(getApplicationContext()).load(user.getProfileImageUri()).into(ivProfileImage);
+                }
+            });
+        }else{
+            user = tweet.getUser();
+            userReplyId = String.valueOf(tweet.getUid());
+            evText.setText("@"+user.getScreenName());
+        }
+//        Log.d("User ", user.toString());
+        tvUserName = (TextView) findViewById(R.id.tvUserN);
+        tvUserName.setText("@" + user.getScreenName());
+        Picasso.with(getApplicationContext()).load(user.getProfileImageUri()).into(ivProfileImage);
 
-            }
-        });
-
-       evText = (EditText)findViewById(R.id.evTweet);
 
     }
 
@@ -93,12 +103,13 @@ public class ComposeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onSave(View v){
+    public void onSave(View v) {
         Intent i = new Intent();
-        EditText editTweet = (EditText)findViewById(R.id.evTweet);
-        String tweet = editTweet.getText().toString();
-        i.putExtra("tweet", tweet);
-        client.postTweet(new JsonHttpResponseHandler(){
+        EditText editTweet = (EditText) findViewById(R.id.evTweet);
+        String twString = editTweet.getText().toString();
+//        i.putExtra("tweet", tweet);
+        String userReplyId = String.valueOf(tweet.getUid());
+        client.postTweet(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
@@ -108,10 +119,11 @@ public class ComposeActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
-        }, tweet);
+        }, twString, userReplyId);
         setResult(RESULT_OK, i);
         finish();
     }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem actionViewItem = menu.findItem(R.id.miActionButton);
@@ -135,14 +147,14 @@ public class ComposeActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count > 140){
+                if (count > 140) {
                     btnTweet.setEnabled(false);
                     btnTweet.setClickable(false);
                     evText.setTextColor(Color.RED);
 
                 }
                 charCount = 140 - evText.getText().length();
-                tvChars.setText(""+charCount);
+                tvChars.setText("" + charCount);
             }
 
             @Override

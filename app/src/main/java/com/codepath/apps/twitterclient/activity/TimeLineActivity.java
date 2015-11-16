@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
+import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.twitterclient.R;
@@ -20,15 +20,8 @@ import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.TweetsListFragment;
 
 public class TimeLineActivity extends AppCompatActivity {
-
-
     private static final int REQUEST_CODE = 100;
-
     private TweetsListFragment fragmentList;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +44,6 @@ public class TimeLineActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_time_line, menu);
-
-
         return true;
     }
     @Override
@@ -63,8 +54,6 @@ public class TimeLineActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -87,6 +76,9 @@ public class TimeLineActivity extends AppCompatActivity {
     public void  onCompose(MenuItem v) {
         Intent intent = new Intent(this, ComposeActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    public void onTweetReply(View view) {
 
     }
 
@@ -122,8 +114,5 @@ public class TimeLineActivity extends AppCompatActivity {
     public void onProfileView(MenuItem mi){
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
-
     }
-
-
 }

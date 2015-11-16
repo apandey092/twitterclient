@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.TwitterApplication;
-import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.twitter.TwitterApplication;
+import com.codepath.apps.twitterclient.twitter.TwitterClient;
 import com.codepath.apps.twitterclient.fragments.UserTimeLineFragment;
 import com.codepath.apps.twitterclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void populateUserHeader(User user) {
-        TextView tvName = (TextView)findViewById(R.id.tvUserName);
+        TextView tvName = (TextView)findViewById(R.id.tvScreenName);
         TextView tvTagLine = (TextView)findViewById(R.id.tvTagline);
         TextView tvFollowers = (TextView)findViewById(R.id.tvFollwers);
         TextView tvFollowing = (TextView)findViewById(R.id.tvFollowing);
