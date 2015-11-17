@@ -40,6 +40,13 @@ public class User extends Model implements Parcelable {
     private String screenName;
     @Column(name="profileImageUri")
     private String profileImageUri;
+    @Column(name = "tagline")
+    private String tagline;
+    @Column(name= "followers_count")
+    private int followersCount;
+    @Column(name = "followings_count")
+    private int followingsCount;
+
 
     public User(){
         super();
@@ -68,6 +75,9 @@ public class User extends Model implements Parcelable {
             u.uid = json.getLong("id_str");
             u.screenName = json.getString("screen_name");
             u.profileImageUri = json.getString("profile_image_url");
+            u.tagline = json.getString("description");
+            u.followersCount= json.getInt("followers_count");
+            u.followingsCount = json.getInt("friends_count");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -117,4 +127,16 @@ public class User extends Model implements Parcelable {
             return new User[size];
         }
     };
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public int getFollowingsCount() {
+        return followingsCount;
+    }
 }
