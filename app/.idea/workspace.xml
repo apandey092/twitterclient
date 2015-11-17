@@ -60,8 +60,11 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/codepath/apps/twitterclient/activity/ProfileActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="63" column="38" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
-              <folding />
+              <caret line="77" column="38" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="38" />
+              <folding>
+                <element signature="e#1782#2886#0" expanded="false" />
+                <element signature="e#2885#2886#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1652,6 +1655,7 @@
     <property name="recentsLimit" value="5" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="192.168.58.101:5555" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Main" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../mobile-android-consumer" />
   </component>
   <component name="RunManager" selected="Android Application.app">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -2027,8 +2031,11 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/codepath/apps/twitterclient/activity/ProfileActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="38" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
-          <folding />
+          <caret line="77" column="38" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="38" />
+          <folding>
+            <element signature="e#1782#2886#0" expanded="false" />
+            <element signature="e#2885#2886#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

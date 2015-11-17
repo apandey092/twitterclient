@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -60,12 +61,19 @@ public class ComposeActivity extends AppCompatActivity {
 
         ivProfileImage = (ImageView) findViewById(R.id.ivUserProfileView);
         evText = (EditText) findViewById(R.id.evTweet);
+        tvUserName = (TextView) findViewById(R.id.tvUserN);
         if (tweet == null || tweet.getUser() == null) {
             client.getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     user = User.fromJson(response);
+                    tvUserName.setText("@" + user.getScreenName());
+                    Picasso.with(getApplicationContext()).load(user.getProfileImageUri()).into(ivProfileImage);
+                }
 
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(getApplicationContext(), "User service not available", Toast.LENGTH_SHORT).show();
                 }
             });
         }else{
@@ -73,12 +81,6 @@ public class ComposeActivity extends AppCompatActivity {
             userReplyId = String.valueOf(tweet.getUid());
             evText.setText("@"+user.getScreenName());
         }
-//        Log.d("User ", user.toString());
-        tvUserName = (TextView) findViewById(R.id.tvUserN);
-        tvUserName.setText("@" + user.getScreenName());
-        Picasso.with(getApplicationContext()).load(user.getProfileImageUri()).into(ivProfileImage);
-
-
     }
 
     @Override

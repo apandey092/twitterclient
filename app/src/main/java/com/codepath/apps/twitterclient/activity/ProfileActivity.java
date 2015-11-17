@@ -3,16 +3,18 @@ package com.codepath.apps.twitterclient.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.twitter.TwitterApplication;
-import com.codepath.apps.twitterclient.twitter.TwitterClient;
 import com.codepath.apps.twitterclient.fragments.UserTimeLineFragment;
 import com.codepath.apps.twitterclient.models.User;
+import com.codepath.apps.twitterclient.twitter.TwitterApplication;
+import com.codepath.apps.twitterclient.twitter.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
@@ -30,9 +32,16 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         client = TwitterApplication.getRestClient();
         user = (User)getIntent().getParcelableExtra("user");
+        final Bundle svIns = savedInstanceState;
         if(user != null){
             getSupportActionBar().setTitle("@"+user.getScreenName());
             populateUserHeader(user);
+            if(savedInstanceState == null) {
+                UserTimeLineFragment userTimeLineFragment = UserTimeLineFragment.newInstance(user.getScreenName());
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.flContainer, userTimeLineFragment);
+                ft.commit();
+            }
         }else {
             client.getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
@@ -40,15 +49,20 @@ public class ProfileActivity extends AppCompatActivity {
                     user = User.fromJson(response);
                     getSupportActionBar().setTitle("@" + user.getScreenName());
                     populateUserHeader(user);
+                    if(svIns == null) {
+                        UserTimeLineFragment userTimeLineFragment = UserTimeLineFragment.newInstance(user.getScreenName());
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.flContainer, userTimeLineFragment);
+                        ft.commit();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("ERROR", errorResponse.toString());
+                    Toast.makeText(getApplicationContext(), "User service not available", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
-//        String screenName = getIntent().getStringExtra("screen_name");
-        if(savedInstanceState == null) {
-            UserTimeLineFragment userTimeLineFragment = UserTimeLineFragment.newInstance(user.getScreenName());
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flContainer, userTimeLineFragment);
-            ft.commit();
         }
 
     }
