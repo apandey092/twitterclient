@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,12 +85,34 @@ public class TweetActivity extends AppCompatActivity {
         ivFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    client.postFavorite(new JsonHttpResponseHandler(){
+                if(!tweet.getIsFavorite()) {
+                    client.postFavorite(new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             ivFav.setImageResource(R.drawable.fav_red);
+                            tweet = Tweet.fromJson(response);
+                            tvFav.setText(String.valueOf(tweet.getFavoriteCount()));
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                            Log.d("Error", response.toString());
                         }
                     }, String.valueOf(tweet.getUid()));
+                }else {
+                    client.deleteFavorite(new JsonHttpResponseHandler(){
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            ivFav.setImageResource(R.drawable.favorite);
+                            tweet = Tweet.fromJson(response);
+                            tvFav.setText(String.valueOf(tweet.getFavoriteCount()));
+                        }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                            Log.d("Error", response.toString());
+                        }
+                    }, String.valueOf(tweet.getUid()));
+                }
             }
         });
 

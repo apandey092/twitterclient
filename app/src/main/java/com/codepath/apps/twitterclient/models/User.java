@@ -98,35 +98,7 @@ public class User extends Model implements Parcelable {
     }
 
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeLong(this.uid);
-        dest.writeString(this.screenName);
-        dest.writeString(this.profileImageUri);
-    }
-
-    protected User(Parcel in) {
-        this.name = in.readString();
-        this.uid = in.readLong();
-        this.screenName = in.readString();
-        this.profileImageUri = in.readString();
-    }
-
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-        public User createFromParcel(Parcel source) {
-            return new User(source);
-        }
-
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     public String getTagline() {
         return tagline;
@@ -139,4 +111,40 @@ public class User extends Model implements Parcelable {
     public int getFollowingsCount() {
         return followingsCount;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeLong(this.uid);
+        dest.writeString(this.screenName);
+        dest.writeString(this.profileImageUri);
+        dest.writeString(this.tagline);
+        dest.writeInt(this.followersCount);
+        dest.writeInt(this.followingsCount);
+    }
+
+    protected User(Parcel in) {
+        this.name = in.readString();
+        this.uid = in.readLong();
+        this.screenName = in.readString();
+        this.profileImageUri = in.readString();
+        this.tagline = in.readString();
+        this.followersCount = in.readInt();
+        this.followingsCount = in.readInt();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
